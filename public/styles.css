@@ -1,0 +1,295 @@
+:root {
+  --background-dark: #121212;
+  --background-light: #e0e0e0;
+  --primary-color: #bb86fc;
+  --secondary-color: #8b949e;
+  --accent-color: #0056b3;
+  --button-color: #3700b3;
+  --border-color: #555;
+  --hover-color: #555;
+  --table-background-color:#121212;
+  --th-background: #563761;
+  --tr-odd: #2a2a2a;
+  --tr-even: #828282;
+  --tr-hover-color: #e0e0e0;
+  --tr-hover-background-color: rgb(100, 20, 114);
+}
+
+body, h1, h2, h3, p, ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--background-dark);
+  color: var(--background-light);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 10px 20px;
+}
+
+.site-title h1 {
+  color: var(--primary-color);
+}
+
+.site-title p {
+  color: var(--secondary-color);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.nav-links li {
+  margin-right: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--secondary-color);
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-links a:hover {
+  color: var(--primary-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.container-flex{
+  margin-left: 1em;
+  margin-right: 1em;
+  display: flex;
+  padding:2em;
+}
+
+  .item {
+    display: inline-block; 
+  }
+
+
+
+h1, h2, h3 {
+  color: var(--primary-color);
+}
+
+p {
+  color: var(--secondary-color);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: var(--button-color);
+  color: var(--background-light);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: var(--hover-color);
+}
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
+.select {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background-color: #333;
+  color: #e0e0e0;
+  cursor: pointer;
+  appearance: none;
+}
+
+.select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #e0e0e0;
+}
+
+.select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  background-color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.select-option {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  color: #e0e0e0;
+}
+
+.select-option:hover {
+  background-color: var(--hover-color);
+}
+
+.custom-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: #333;
+  color: #e0e0e0;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.custom-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* MUI Style Table */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mui-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--table-background-color);
+  color: var(--background-light);
+}
+
+.mui-table th, .mui-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mui-table th {
+  background-color: var(--th-background);
+  color: var(--background-light);
+}
+
+.mui-table tbody tr:nth-child(odd) {
+  background-color: var(--tr-odd);
+}
+.mui-table tbody tr:nth-child(even) {
+  background-color: var(--tr-even);
+}
+
+.mui-table tbody tr:hover {
+  background-color: var(--tr-hover-background-color);
+  color:var(--tr-hover-color)
+}
+
+footer {
+  background-color: #121212;
+  color: var(--background-light);
+  padding: 20px 0;
+  text-align: center;
+}
+
+footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ... existing styles ... */
+
+.auth-form {
+  max-width: 400px; /* Adjust the maximum width of the form as needed */
+  margin: 0 auto;
+}
+
+.auth-form .container-flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.auth-form .item {
+  flex: 1; /* Use flex property to distribute space evenly between inputs */
+  margin-right: 10px; /* Add margin between the items */
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.auth-form input {
+  width: 100%; /* Make the inputs fill the available width */
+}
+
+/* ... existing styles ... */
+
+
+/* Add media queries for responsiveness */
+@media only screen and (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links li {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .container-flex {
+    flex-direction: column;
+  }
+
+  .item {
+    display: block;
+    margin-bottom: 10px;
+  }
+}
+
+/* Add more media queries as needed */

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+  <%- include("./partials/nav.ejs") %>
+
+  <div class="container">
+    <h2>Welcome to Group Pidgeon's Website</h2>
+
+    <div class="container">
+      <h4>Teachers</h4>
+     <section class="courses">
+      <table class="mui-table" id="teachersTable">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% teachers.forEach(teacher => { %>
+          <tr class="teacher-row" data-id="<%= teacher.id %>">
+            <td><%= teacher.id %></td>
+            <td><%= teacher.name %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table> 
+      </section>
+    </div>
+    
+      <div class="container">
+        <h4>Courses</h4>
+    
+        <section class="courses">
+          <table class="mui-table" id="coursesTable">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Teacher</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% courses.forEach(c => { %>
+              <tr class="course-row" data-id="<%= c.id %>" data-teacher-id="<%= c.teacher.id %>">
+                <td><%= c.id %></td>
+                <td><%= c.name %></td>
+                <td><%= c.teacher.name %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+
+   <!-- Include Axios library -->
+
+  <script>
+    
+    // Add event listener to each row in the courses table
+    document.querySelectorAll('.course-row').forEach(row => {
+      row.addEventListener('click', function () {
+        // Log the course.id when a row is clicked
+        let id = this.getAttribute('data-id');
+        window.location.assign(window.location.origin + '/courseForm/' + id);
+      });
+    });
+  </script>
+</body>
+</html>

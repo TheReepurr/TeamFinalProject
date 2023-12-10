@@ -1,0 +1,40 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+  <%- include("./partials/nav.ejs") %>
+
+  <div class="content container">
+    <h2>Teachers</h2>
+
+    <!-- Display list of teachers in a table -->
+    <table class="mui-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% teachers.forEach(teacher => { %>
+          <tr  data-id="<%= teacher.id %>" class="course-row">
+            <td><%= teacher.name %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+
+  <script>
+    // Add event listener to each row in the courses table
+      document.querySelectorAll('.course-row').forEach(row => {
+      row.addEventListener('click', function () {
+        const id = row.dataset.id;
+        window.location.assign(window.location.origin + '/teacherForm/' + id);
+      });
+    });
+    
+  </script>
+</body>
+</html>

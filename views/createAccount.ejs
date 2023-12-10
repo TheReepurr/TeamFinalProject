@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+<body>
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="container">
+        <div id="signin-form" class="auth-form">
+            <h2><%= title %></h2>
+            <form>
+
+                        <label for="firstname">First Name</label>
+                        <input type="text" id="firstname" name="firstname" class="custom-input" required>
+
+                        <label for="lastname">Last Name</label>
+                        <input type="text" id="lastname" name="lastname" class="custom-input" required>
+       
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" class="custom-input" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="custom-input" required>
+                
+                <button id="btnCreate" type="button" class="button">Create Account</button>
+                <button id="btnSignin" type="button" class="button">Sign In</button>
+                
+            
+            </form>
+        </div>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        const signinForm = document.getElementById('signin-form');
+            const btnSignIn = document.querySelector('#btnSignin');
+            const btnCreate = document.querySelector('#btnCreate');
+            const inputs = signinForm.querySelectorAll('input');
+            inputs[0].focus();
+            inputs.forEach((input, index) => {
+            input.addEventListener('keydown', (event) => {
+              if (['Enter','ArrowDown'].includes(event.key)) {
+                event.preventDefault();
+                if (index < inputs.length - 1) {
+                  inputs[index + 1].focus();
+                }
+              } else if (event.key === 'ArrowUp') {
+                if (index > 0) {
+                  inputs[index - 1].focus();
+                }
+              }
+            });
+          });
+
+          
+  
+          btnSignIn.addEventListener('click', () => {
+            window.location.assign(`${window.location.origin}\\signin`)
+          })
+  
+          btnCreate.addEventListener('click', async () => {
+              const user = {
+                name: {
+                    firstName: document.querySelector('#firstname').value,
+                    lastName: document.querySelector('#lastname').value
+                },
+                userName: document.querySelector('#username').value,
+                password: document.querySelector('#password').value
+              }
+              axios.post(`../api/createUser/${JSON.stringify(user)}`).then(res => {
+                console.log(res.data);
+              })
+              
+
+          })
+    </script>
+</body>
+</html>
