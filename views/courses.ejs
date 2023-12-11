@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+  <%- include("./partials/nav.ejs") %>
+
+  <div class="container">
+    <h2>Courses</h2>
+
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+
+  <script src="./createTable.js"></script>
+  
+  <script>
+    const setCookie = (id) => {
+      sessionStorage.setItem('courseId', id)
+    }
+
+    const setUpTable = async () => {
+      await axiosGet('./api/courses').then(async courses => {
+        const table = await createTable(courses.data);
+        const container = document.querySelector('.container');
+        container.append(table);
+        courseAddButtons(table);
+      })
+        .catch(e => console.error(e));
+    }
+    setUpTable();
+
+
+  </script>
+  </body>
+  
+  </html>

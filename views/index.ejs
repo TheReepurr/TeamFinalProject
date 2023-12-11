@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+  <%- include("./partials/nav.ejs") %>
+
+  <div class="container">
+    <h2>Welcome to Group Pidgeon's Website</h2>
+
+    <div class="container">
+      <h4>Teachers</h4>
+     <section class="teachers">
+      
+      </section>
+    </div>
+    
+      <div class="container">
+        <h4>Courses</h4>
+    
+        <section class="courses">
+          
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+
+  <script src="./createTable.js"></script>
+
+  <script>
+    
+    const setUpCourseTable = async () => {
+      await axiosGet('./api/courses').then(async teachers => {
+        const table = await createTable(teachers.data);
+        const container = document.querySelector('.courses');
+        table.querySelectorAll('tr').forEach(async row => {
+          const id = row.dataset.id;
+          row.addEventListener('click', () => {
+            window.location.assign(window.location.origin + '/teacherForm/' + id);
+          });
+        });
+        container.append(table);
+      })
+      .catch(e => console.error(e));
+    }
+    setUpCourseTable();
+
+    
+    const setUpTeacherTable = async () => {
+      await axiosGet('./api/teachers').then(async teachers => {
+        const table = await createTable(teachers.data);
+        const container = document.querySelector('.teachers');
+        table.querySelectorAll('tr').forEach(async row => {
+          const id = row.dataset.id;
+          row.addEventListener('click', () => {
+            window.location.assign(window.location.origin + '/teacherForm/' + id);
+          });
+        });
+        container.append(table);
+      })
+      .catch(e => console.error(e));
+    }
+    setUpTeacherTable();
+  </script>
+</body>
+</html>

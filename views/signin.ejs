@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+<body>
+    <%- include("./partials/nav.ejs") %>
+
+    <div class="container">
+        <div id="signin-form" class="auth-form">
+            <h2>Sign In</h2>
+            <form>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" class="custom-input" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="custom-input" required>
+
+                <button id="btnSignin" type="button" class="button">Sign In</button>
+                <button id="btnCreate" type="button" class="button">Create Account</button>
+            </form>
+        </div>
+
+    
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+    
+    
+
+    <script>
+         setAuth();
+    const signinForm = document.getElementById('signin-form');
+    const btnSignIn = document.querySelector('#btnSignin');
+    const btnCreate = document.querySelector('#btnCreate');
+    const inputs = signinForm.querySelectorAll('input');
+    
+    inputs[0].focus();
+    
+    inputs.forEach((input, index) => {
+        input.addEventListener('keydown', (event) => {
+            if (['Enter', 'ArrowDown'].includes(event.key)) {
+                event.preventDefault();
+                if (index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            } else if (event.key === 'ArrowUp') {
+                if (index > 0) {
+                    inputs[index - 1].focus();
+                }
+            }
+        });
+    });
+
+    btnSignIn.addEventListener('click', async () => {
+        try {
+            const user = {
+                username: document.querySelector('#username').value,
+                password: document.querySelector('#password').value
+            };
+
+            // Make a POST request instead of GET
+            const res = await axios.post('../api/sign-in', user);
+            console.log(res.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+
+    btnCreate.addEventListener('click', () => {
+        window.location.assign(`${window.location.origin}/createAccount`);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+  <%- include("./partials/nav.ejs") %>
+
+  <div class="container card">
+    <h2 class="card-title modern-title"><%= pageTitle %></h2>
+
+    <!-- Course Form -->
+    <form method="POST" class="card-content modern-form">
+      <label for="teacherName" class="modern-label">Teacher Name:</label>
+      <input type="text" id="teacherName" name="courseName" value="" class="custom-input" required>
+      <button id="submitButton" type="button" class="button modern-button"><%= buttonLabel %></button>
+    </form>
+  </div>
+
+  <%- include("./partials/footer.ejs") %>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+  const input = document.querySelector('input');
+  const btn = document.querySelector('button');
+  const h2 = document.querySelector('h2');
+
+
+  const getCookie = async () => {
+    return sessionStorage.getItem('teacherId');
+  }
+  const setUpForm = async () => {
+      const id = await getCookie();
+      console.log(id);
+      if(id){
+        await axiosGet(`../api/teachers/${JSON.stringify(id)}`)
+          .then(json => json.data)
+          .then(teacher => {
+            console.log(teacher);
+            input.dataset.id = teacher._id;
+            input.value = teacher.name;
+            btn.innerText = `Update: ${teacher.name}`;
+            h2.innerText = `Update: ${teacher._id}`;
+          })
+          .catch(e => console.error(e))
+          .finally(() => sessionStorage.clear());
+      }
+  }
+  setUpForm();
+
+  document.querySelector('#submitButton').addEventListener('click', async () => {
+  try {
+    const id = input.dataset.id;
+    const teacherName = document.querySelector('#teacherName').value;
+
+    const newTeach = id ? { name: teacherName, id: id } : { name: teacherName };
+    const res = id ? await axiosPut('./api/teacher/', newTeach) : await axiosPost(`./api/teacher`, newTeach);
+
+    console.log(res);
+
+    if (res.status === 200) {
+      alert('Teacher Created, ID: ' + res.data._id);
+      window.location.assign(`${window.location.origin}/teachers`);
+    } else {
+      alert("Failed to create " + teacherName);
+    }
+  } catch (e) {
+    console.error(e);
+    alert("An error occurred");
+  }
+});
+
+</script>
+</html>
