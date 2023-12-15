@@ -1,68 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include("./partials/head.ejs") %>
+  <% include("./partials/head.ejs") %>
 
-<body>
-  <%- include("./partials/nav.ejs") %>
-
-  <div class="container">
-    <h2>Welcome to Group Pidgeon's Website</h2>
+  <body>
+    <% include("./partials/nav.ejs") %>
 
     <div class="container">
-      <h4>Teachers</h4>
-     <section class="teachers">
-      
-      </section>
-    </div>
-    
+      <h2>Welcome to Group Pidgeon's Website</h2>
+
       <div class="container">
-        <h4>Courses</h4>
-    
+        <h4 id="myCourses"></h4>
+
         <section class="courses">
-          
+
         </section>
       </div>
-    </section>
-  </div>
+    </div>
 
-  <%- include("./partials/footer.ejs") %>
+    <% include("./partials/footer.ejs") %>
 
-  <script src="./createTable.js"></script>
+    <script src="./createTable.js"></script>
 
-  <script>
-    
-    const setUpCourseTable = async () => {
-      await axiosGet('./api/courses').then(async teachers => {
-        const table = await createTable(teachers.data);
+    <script>
+      const createUserCourseTable = async (data) => {
+        console.log(data);
         const container = document.querySelector('.courses');
-        table.querySelectorAll('tr').forEach(async row => {
-          const id = row.dataset.id;
-          row.addEventListener('click', () => {
-            window.location.assign(window.location.origin + '/teacherForm/' + id);
-          });
-        });
-        container.append(table);
-      })
-      .catch(e => console.error(e));
-    }
-    setUpCourseTable();
+        const h4 = document.querySelector('#myCourses');
+        const tbl = document.createElement('table');
+        tbl.classList.add("mui-table");
+        const tbody = tbl.createTBody();
+        const thead = tbl.createTHead();
+        container.appendChild(tbl);
+        h4.innerText = `${data.username} Signed Up Courses`;
 
-    
-    const setUpTeacherTable = async () => {
-      await axiosGet('./api/teachers').then(async teachers => {
-        const table = await createTable(teachers.data);
-        const container = document.querySelector('.teachers');
-        table.querySelectorAll('tr').forEach(async row => {
-          const id = row.dataset.id;
-          row.addEventListener('click', () => {
-            window.location.assign(window.location.origin + '/teacherForm/' + id);
+        const thRow = document.createElement('tr');
+        const ths = Array.from({ length: 3 }, (_, i) => {
+          const th = document.createElement('th');
+          th.innerText = i === 0 ? "Course Name" : "Teacher Name";
+          return th;
+        });
+        ths.forEach(th => thRow.appendChild(th));
+        thead.appendChild(thRow);
+
+        data.courses.forEach(c => {
+          const row = document.createElement('tr');
+          row.classList.add("course-row");
+          row.dataset.id = c._id;
+          const tds = Array.from({ length: 3 }, (_, i) => document.createElement('td'));
+          tds[0].innerText = c.name;
+          tds[1].innerText = c.teacher.name;
+          const btn = document.createElement('button');
+          btn.classList.add("button", "modern-button");
+          btn.innerText = "Remove Course";
+          tds[2].appendChild(btn);
+          tds.forEach(td => row.appendChild(td));
+          tbody.appendChild(row);
+
+          btn.addEventListener('click', async () => {
+            const sendData = {
+              token: JSON.parse(localStorage.getItem('AUTH_HEADER')).token,
+              courseId: row.dataset.id
+            };
+            await axios.put('./api/RemoveCourseFromUser', sendData)
+              .then(res => res.data)
+              .then(data => console.log(data))
+              .catch(e => console.error(e))
+              .finally(() => window.location.reload());
           });
         });
-        container.append(table);
-      })
-      .catch(e => console.error(e));
-    }
-    setUpTeacherTable();
-  </script>
-</body>
+      };
+
+      const setUpUsersCourses = async () => {
+        const userToken = JSON.parse(localStorage.getItem('User'));
+        console.log(userToken);
+
+        try {
+          const userCourses = await axios.get('./api/userCourseInfo', { params: userToken });
+          await createUserCourseTable(userCourses.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      setUpUsersCourses();
+    </script>
+  </body>
 </html>
