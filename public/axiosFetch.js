@@ -1,27 +1,37 @@
+const AUTH_HEADER = 'User';
 
-const setAuth = async (auth) => {
-    localStorage.setItem('user',auth)
-}
-const getAuth = async () => {
-    return localStorage.getItem('user');
-}
-const axiosPost = async (url, obj) => {
-    const token = await getAuth();
-    axios.defaults.headers.common['Authorization'] = token;
-    return await axios.post(url, obj)
-}
-const axiosGet = async (url, obj) => {
-    const token = await getAuth();
-    axios.defaults.headers.common['Authorization'] = token; 
-    return await axios.get(url, obj);
-}
-const axiosPut = async (url, obj) => {
-    const token = await getAuth();
-    axios.defaults.headers.common['Authorization'] = token;
-    return await axios.put(url, obj)
-}
-const axiosDelete = async (url,obj) => {
-    const token = await getAuth();
-    axios.defaults.headers.common['Authorization'] = token;
-    return await axios.delete(url, obj)
-}
+const setAuth = (auth) => {
+    localStorage.setItem(AUTH_HEADER, auth);
+    axios.defaults.headers.common[AUTH_HEADER] = JSON.parse(auth).token;
+};
+
+const getAuth = () => {
+    return localStorage.getItem(AUTH_HEADER);
+};
+
+const setAuthHeader = () => {
+    const auth = getAuth();
+    if (auth) {
+        axios.defaults.headers.common[AUTH_HEADER] = JSON.parse(auth).token;
+    }
+};
+
+const axiosPost = async (url, data) => {
+    setAuthHeader();
+    return await axios.post(url, data);
+};
+
+const axiosGet = async (url, params) => {
+    setAuthHeader();
+    return await axios.get(url, { params });
+};
+
+const axiosPut = async (url, data) => {
+    setAuthHeader();
+    return await axios.put(url, data);
+};
+
+const axiosDelete = async (url, data) => {
+    setAuthHeader();
+    return await axios.delete(url, { data });
+};
